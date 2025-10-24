@@ -16,7 +16,7 @@
                     </h1>
                     <p class="hero-subtitle mb-4">Spesialisasi kami dalam jersey basket, PDL/PDH, jersey futsal & esport, hoodie, serta jaket. Dapatkan kualitas premium dengan desain sesuai keinginan Anda.</p>
                     <div class="d-flex gap-3">
-                        <a href="https://wa.me/62812345678" class="btn btn-primary btn-lg">
+                        <a href="https://wa.me/62812345678" class="btn btn-primary btn-lg" style="color: #fff">
                             <i class="fab fa-whatsapp me-2"></i> Konsultasi Gratis
                         </a>
                         <a href="#portofolio" class="btn btn-secondary btn-lg">Lihat Portofolio</a>
@@ -40,21 +40,21 @@
             </div>
             <div class="row g-5">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card d-flex flex-column align-items-center">
+                    <div class="feature-card d-flex flex-column align-items-center h-100">
                         <div class="feature-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-gem"></i></div>
                         <h5>Kualitas Jahitan Halus</h5>
                         <p>Setiap jahitan dikerjakan dengan teliti oleh tim kami, memastikan hasil yang rapi dan tahan lama.</p>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card feature-card--center d-flex flex-column align-items-center">
+                    <div class="feature-card d-flex flex-column align-items-center h-100">
                         <div class="feature-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-tag"></i></div>
                         <h5>Harga Jujur & Transparan</h5>
                         <p>Dapatkan penawaran harga yang kompetitif dan transparan, tanpa mengorbankan kualitas material maupun hasil produksi.</p>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card d-flex flex-column align-items-center">
+                    <div class="feature-card d-flex flex-column align-items-center h-100">
                         <div class="feature-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-clock"></i></div>
                         <h5>Fleksibel & Tepat Waktu</h5>
                         <p>Kami mengerti kebutuhan Anda. Proses produksi kami fleksibel dan selalu berusaha menyelesaikan pesanan sesuai jadwal.</p>

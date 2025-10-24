@@ -16,4 +16,11 @@ export default defineConfig({
             '~': path.resolve(__dirname, 'node_modules'),
         },
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true,
+            },
+        },
+    },
 });

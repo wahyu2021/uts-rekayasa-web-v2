@@ -1,15 +1,18 @@
-// Import Libraries
+// Import Partials (using @use) - MUST BE AT THE TOP
+@use './partials/variables';
+@use './partials/global';
+@use './partials/components';
+@use './partials/layout';
+@use './partials/pages';
+$primary: #F97316; // Define custom primary color
+@use "bootstrap" with (
+  $primary: $primary
+);
+
+// Import Libraries (using @import for plain CSS)
 @import "../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 @import "../../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
-@import "../../node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/aos/dist/aos.css";
-
-// Import Partials
-@import './partials/variables';
-@import './partials/global';
-@import './partials/components';
-@import './partials/layout';
-@import './partials/pages';
 
 // ============================================
 // Responsive Design

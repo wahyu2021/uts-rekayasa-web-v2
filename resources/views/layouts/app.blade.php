@@ -21,5 +21,12 @@
 
     @stack('scripts')
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <a href="#" id="scrollToTopBtn" class="rounded-circle shadow">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 </body>
 </html>

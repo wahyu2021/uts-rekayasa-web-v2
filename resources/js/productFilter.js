@@ -1,13 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    // AOS Initialization
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 800,
-            once: true,
-        });
-    }
-
     // Product Filtering Logic
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');

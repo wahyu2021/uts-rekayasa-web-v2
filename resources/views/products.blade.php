@@ -90,7 +90,3 @@
     </section>
 
 @endsection
-
-@push('scripts')
-    @vite(['resources/js/productFilter.js'])
-@endpush
