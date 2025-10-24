@@ -1,2 +1,3 @@
 import './bootstrap';
-import 'bootstrap';
+import './typingEffect';
+import './stepRulerHover';
