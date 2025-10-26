@@ -34,4 +34,9 @@ class ProductController extends Controller
             'selectedCategories' => $selectedCategories ?? [] // Pass selected filters back to the view
         ]);
     }
+
+    public function show(Product $product)
+    {
+        return view('products.show', compact('product'));
+    }
 }

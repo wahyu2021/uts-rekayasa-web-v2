@@ -13,6 +13,7 @@ use App\Http\Controllers\CheckoutController; // <-- TAMBAHKAN INI
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/about', function () {
     return view('about');

@@ -10,6 +10,7 @@ use App\Models\Product; // Import Product model
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log; // Import Log facade
+use App\Http\Controllers\CartController; // Import CartController
 
 class CheckoutController extends Controller
 {
@@ -18,14 +19,14 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        if (session()->has('buy_now_item')) {
-            $cart = [session('buy_now_item')['id'] => session('buy_now_item')];
-        } elseif (session()->has('selected_cart_items')) {
-            $cart = session('selected_cart_items');
-        } else {
-            $cart = session()->get('cart', []);
+        $cart = CartController::getCart();
+        $cartItems = $cart->items()->with('product')->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('products.index')->with('error', 'Your cart is empty.');
         }
-        return view('checkout.index', compact('cart'));
+
+        return view('checkout.index', compact('cartItems'));
     }
 
     /**
@@ -40,27 +41,16 @@ class CheckoutController extends Controller
             'payment_method' => 'required|string',
         ]);
 
-        $cartToProcess = [];
-        $isBuyNow = false;
-        $isSelectedCart = false;
+        $cart = CartController::getCart();
+        $cartItems = $cart->items()->with('product')->get();
 
-        if (session()->has('buy_now_item')) {
-            $cartToProcess = [session('buy_now_item')['id'] => session('buy_now_item')];
-            $isBuyNow = true;
-        } elseif (session()->has('selected_cart_items')) {
-            $cartToProcess = session('selected_cart_items');
-            $isSelectedCart = true;
-        } else {
-            $cartToProcess = session()->get('cart', []);
-        }
-
-        if (empty($cartToProcess)) {
+        if ($cartItems->isEmpty()) {
             return redirect()->route('products.index')->with('error', 'Tidak ada produk untuk diproses checkout.');
         }
 
         $totalPrice = 0;
-        foreach ($cartToProcess as $item) {
-            $totalPrice += $item['price'] * $item['quantity'];
+        foreach ($cartItems as $item) {
+            $totalPrice += $item->price * $item->quantity;
         }
 
         // Create Order
@@ -73,13 +63,18 @@ class CheckoutController extends Controller
         ]);
 
         // Create Order Items
-        foreach ($cartToProcess as $productId => $details) {
+        foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $details['quantity'],
-                'unit_price' => $details['price'],
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->price,
             ]);
+
+            // Optionally decrement product stock
+            $product = $item->product;
+            $product->stock -= $item->quantity;
+            $product->save();
         }
         
         // Create Payment
@@ -90,22 +85,9 @@ class CheckoutController extends Controller
             'status' => 'pending',
         ]);
 
-        // Handle cart clearing based on the checkout type
-        if ($isBuyNow) {
-            session()->forget('buy_now_item'); // Clear flash data
-        } elseif ($isSelectedCart) {
-            $currentCart = session()->get('cart', []);
-            foreach ($cartToProcess as $productId => $details) {
-                if (isset($currentCart[$productId])) {
-                    unset($currentCart[$productId]);
-                }
-            }
-            session()->put('cart', $currentCart);
-            session()->forget('selected_cart_items'); // Clear flash data
-        } else {
-            // Regular checkout, clear entire cart
-            session()->forget('cart');
-        }
+        // Clear the cart after successful checkout
+        $cart->items()->delete();
+        $cart->delete(); // Delete the cart itself if it's empty or no longer needed
 
         return redirect()->route('home')->with('success', 'Pesanan Anda berhasil dibuat!');
     }
@@ -125,26 +107,24 @@ class CheckoutController extends Controller
             return redirect()->back()->with('error', 'Not enough stock available for direct purchase.');
         }
 
-        $buyNowItem = [
-            'id' => $product->id,
-            'name' => $product->name,
-            'quantity' => $quantity,
-            'price' => $product->price,
-            'image' => $product->image_path,
-            'slug' => $product->slug,
-        ];
+        // Get the current user's or guest's cart
+        $cart = CartController::getCart();
 
-        // Store the single item in session flash for the next request
-        session()->flash('buy_now_item', $buyNowItem);
+        // Clear existing items in the cart for 'Buy Now'
+        $cart->items()->delete();
+
+        // Add the 'Buy Now' product to the cart
+        $cart->items()->create([
+            'product_id' => $product->id,
+            'quantity' => $quantity,
+            'price' => $product->price, // Store current price
+        ]);
 
         return redirect()->route('checkout.index');
     }
 
     public function checkoutSelected(Request $request)
     {
-        Log::info('checkoutSelected method called.');
-        Log::info('Request data: ' . json_encode($request->all()));
-
         $request->validate([
             'selected_products' => 'required|array',
             'selected_products.*' => 'exists:products,id', // Ensure all selected product IDs exist
@@ -152,48 +132,32 @@ class CheckoutController extends Controller
             'quantities.*' => 'integer|min:1',
         ]);
 
-        Log::info('Validation passed.');
+        $cart = CartController::getCart();
 
-        $selectedItems = [];
-        $cart = session()->get('cart', []); // Get the full cart to retrieve product details
-
-        Log::info('Current session cart: ' . json_encode($cart));
+        // Clear existing items in the cart for selected checkout
+        $cart->items()->delete();
 
         foreach ($request->selected_products as $productId) {
             $quantity = $request->quantities[$productId] ?? 0;
 
-            Log::info("Processing product ID: {$productId}, Quantity: {$quantity}");
+            if ($quantity > 0) {
+                $product = Product::findOrFail($productId);
+                // Check if product stock is sufficient
+                if ($product->stock < $quantity) {
+                    return redirect()->back()->with('error', 'Not enough stock for one of the selected products.');
+                }
 
-            if ($quantity > 0 && isset($cart[$productId])) {
-                $productData = $cart[$productId];
-                // Ensure stock is sufficient (optional, but good practice)
-                // if ($productData['stock'] < $quantity) {
-                //     return redirect()->back()->with('error', 'Not enough stock for one of the selected products.');
-                // }
-
-                $selectedItems[$productId] = [
-                    'id' => $productId,
-                    'name' => $productData['name'],
+                $cart->items()->create([
+                    'product_id' => $product->id,
                     'quantity' => $quantity,
-                    'price' => $productData['price'],
-                    'image' => $productData['image'],
-                    'slug' => $productData['slug'] ?? null,
-                ];
-                Log::info("Added product {$productId} to selectedItems.");
-            } else {
-                Log::warning("Product {$productId} not found in session cart or quantity is zero/invalid.");
+                    'price' => $product->price,
+                ]);
             }
         }
 
-        Log::info('Final selectedItems: ' . json_encode($selectedItems));
-
-        if (empty($selectedItems)) {
-            Log::warning('No products selected for checkout after processing.');
+        if ($cart->items()->count() === 0) {
             return redirect()->back()->with('error', 'No products selected for checkout.');
         }
-
-        session()->flash('selected_cart_items', $selectedItems);
-        Log::info('selected_cart_items flashed to session.');
 
         return redirect()->route('checkout.index');
     }

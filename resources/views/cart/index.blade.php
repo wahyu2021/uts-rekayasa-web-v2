@@ -16,7 +16,7 @@
 
     <section class="section section-compact-top">
         <div class="container">
-            @if(empty($cart))
+            @if($cartItems->isEmpty())
                 <div class="text-center py-5">
                     <i class="fas fa-shopping-cart fa-5x text-muted mb-4"></i>
                     <h3 class="text-secondary mb-3">Keranjang Anda kosong</h3>
@@ -48,31 +48,31 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($cart as $id => $details)
-                                                    <tr data-product-id="{{ $id }}" data-product-price="{{ $details['price'] }}">
+                                            @foreach($cartItems as $item)
+                                                    <tr data-product-id="{{ $item->product->id }}" data-product-price="{{ $item->price }}">
                                                         <td class="align-middle text-center">
-                                                            <input type="checkbox" name="selected_products[]" value="{{ $id }}" class="form-check-input product-checkbox">
+                                                            <input type="checkbox" name="selected_products[]" value="{{ $item->product->id }}" class="form-check-input product-checkbox">
                                                         </td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                @if($details['image'])
-                                                                    <img src="{{ asset('storage/' . $details['image']) }}" alt="{{ $details['name'] }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--border-radius-sm);">
+                                                                @if($item->product->image_path)
+                                                                    <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--border-radius-sm);">
                                                                 @else
-                                                                    <img src="https://via.placeholder.com/80x80.png/f97316/ffffff?text=TAASHOP" alt="{{ $details['name'] }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--border-radius-sm);">
+                                                                    <img src="https://via.placeholder.com/80x80.png/f97316/ffffff?text=TAASHOP" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--border-radius-sm);">
                                                                 @endif
                                                                 <div>
-                                                                    <h6 class="mb-0 text-secondary">{{ $details['name'] }}</h6>
-                                                                    <small class="text-muted">ID: {{ $id }}</small>
+                                                                    <h6 class="mb-0 text-secondary">{{ $item->product->name }}</h6>
+                                                                    <small class="text-muted">ID: {{ $item->product->id }}</small>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="align-middle">Rp {{ number_format($details['price'], 0, ',', '.') }}</td>
+                                                        <td class="align-middle">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                                         <td class="align-middle">
-                                                            <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity-input" min="1" data-id="{{ $id }}" style="width: 80px;" name="quantities[{{ $id }}]">
+                                                            <input type="number" value="{{ $item->quantity }}" class="form-control quantity-input" min="1" data-id="{{ $item->product->id }}" style="width: 80px;" name="quantities[{{ $item->product->id }}]">
                                                         </td>
-                                                        <td class="align-middle product-subtotal">Rp {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}</td>
+                                                        <td class="align-middle product-subtotal">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
                                                         <td class="align-middle">
-                                                            <button type="button" class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}" title="Hapus Produk"><i class="fas fa-trash"></i></button>
+                                                            <button type="button" class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $item->product->id }}" title="Hapus Produk"><i class="fas fa-trash"></i></button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -163,25 +163,10 @@
             });
         });
 
-        // Explicitly handle checkout button click
         checkoutButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default form submission initially
-            console.log('Checkout button clicked.');
-
-            // Check if any product is selected before submitting
-            let anyProductSelected = false;
-            productCheckboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    anyProductSelected = true;
-                }
-            });
-
-            if (anyProductSelected) {
-                console.log('Submitting checkout form...');
-                checkoutForm.submit();
-            } else {
-                alert('Pilih setidaknya satu produk untuk melanjutkan checkout.');
-            }
+            // The button is already disabled if no products are selected, so we can directly submit
+            // if it's enabled.
+            // The form will submit to route('checkout.selected')
         });
 
         quantityInputs.forEach(input => {
