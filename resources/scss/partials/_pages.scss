@@ -182,33 +182,23 @@
     color: var(--color-secondary);
   }
 
-  .filter-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+  .filter-options {
+    // Basic styling for the container of checkboxes
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: #fff;
   }
 
-  .filter-btn {
-    padding: 0.75rem 1.5rem;
-    border: 2px solid var(--color-border);
-    background-color: #fff;
+  .form-check-label {
     color: var(--color-text);
-    border-radius: var(--border-radius);
-    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
+  }
 
-    &:hover {
-      border-color: var(--color-primary);
-      color: var(--color-primary);
-    }
-
-    &.active {
-      background-color: var(--color-primary);
-      color: #fff;
-      border-color: var(--color-primary);
-    }
+  .form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
   }
 }
 
@@ -217,7 +207,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
-  margin-top: 3rem;
 }
 
 // ============================================

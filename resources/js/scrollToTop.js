@@ -4,11 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show or hide the button based on scroll position
     window.onscroll = function() {
         if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            scrollToTopBtn.style.display = 'flex'; // Use flex to center icon
-            scrollToTopBtn.style.alignItems = 'center';
-            scrollToTopBtn.style.justifyContent = 'center';
+            scrollToTopBtn.classList.add('show');
         } else {
-            scrollToTopBtn.style.display = 'none';
+            scrollToTopBtn.classList.remove('show');
         }
     };
 

@@ -21,6 +21,7 @@
         font-weight: 700;
         font-size: 1.25rem;
         color: #fff;
+        transition: color 0.3s ease; // Add transition for color
 
         img {
             height: 40px;
@@ -31,13 +32,17 @@
             display: inline-block;
         }
 
+        &:hover { // Add hover for the entire brand link
+            color: var(--color-primary-light); // Change text color on hover
+        }
+
         &:hover img {
             transform: scale(1.05);
         }
     }
 
     .nav-link {
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: rgba(255, 255, 255, 0.85) !important;
         font-weight: 600;
         font-size: 0.95rem;
         transition: all 0.3s ease;

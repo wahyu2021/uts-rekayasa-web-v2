@@ -8,15 +8,15 @@
         <div class="hero-shape hero-shape-1"></div>
         <div class="hero-shape hero-shape-2"></div>
         <div class="hero-shape hero-shape-3"></div>
-        <div class="container">
-            <div class="row align-items-center g-5">
+        <div class="container pb-lg-4">
+            <div class="row align-items-center g-5 mb-lg-5">
                 <div class="col-lg-6 hero-content" data-aos="fade-right">
                     <h1 class="hero-title">
                         <span id="typed-text"></span>
                     </h1>
                     <p class="hero-subtitle mb-4">Spesialisasi kami dalam jersey basket, PDL/PDH, jersey futsal & esport, hoodie, serta jaket. Dapatkan kualitas premium dengan desain sesuai keinginan Anda.</p>
                     <div class="d-flex gap-3">
-                        <a href="https://wa.me/62812345678" class="btn btn-primary btn-lg" style="color: #fff">
+                        <a href="https://wa.me/62812345678" class="btn btn-primary btn-lg">
                             <i class="fab fa-whatsapp me-2"></i> Konsultasi Gratis
                         </a>
                         <a href="#portofolio" class="btn btn-secondary btn-lg">Lihat Portofolio</a>
