@@ -202,6 +202,32 @@
     }
 }
 
+.btn-outline-primary {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: transparent;
+    font-weight: 700;
+    padding: 12px 36px;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: var(--color-primary);
+        color: #fff !important;
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+    }
+
+    &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+    }
+
+    &:focus {
+        box-shadow: 0 4px 20px rgba(249, 115, 22, 0.2),
+            0 0 0 3px rgba(249, 115, 22, 0.3);
+    }
+}
+
 .portfolio-card {
     border-radius: var(--border-radius);
     overflow: hidden;
