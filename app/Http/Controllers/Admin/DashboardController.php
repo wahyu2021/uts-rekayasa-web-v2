@@ -6,32 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    /**
+     * Menampilkan halaman dashboard admin.
+     *
+     * Method ini mengumpulkan data statistik seperti total produk, kategori, pesanan, dan pendapatan.
+     * Method ini juga menyiapkan data untuk chart penjualan dalam 7 hari terakhir.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
-        // Stat Cards
         $totalProducts = Product::count();
         $totalCategories = Category::count();
         $totalOrders = Order::count();
         $totalRevenue = Order::where('status', 'completed')->sum('total_price');
 
-        // Sales Chart Data (Last 7 Days)
         $salesData = Order::select(
             DB::raw('DATE(created_at) as date'),
             DB::raw('SUM(total_price) as total')
         )
-        ->where('status', 'completed')
-        ->where('created_at', '>=', Carbon::now()->subDays(6))
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->get();
+            ->where('status', 'completed')
+            ->where('created_at', '>=', Carbon::now()->subDays(6))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
 
-        // Format data for Chart.js
         $dates = [];
         $totals = [];
         $period = Carbon::now()->subDays(6)->startOfDay()->toPeriod(Carbon::now()->endOfDay());

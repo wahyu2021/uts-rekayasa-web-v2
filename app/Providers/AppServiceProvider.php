@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\CartController;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Http\Controllers\CartController; // Tambahkan ini
+use Illuminate\Support\ServiceProvider; // Tambahkan ini
 
 class AppServiceProvider extends ServiceProvider
 {

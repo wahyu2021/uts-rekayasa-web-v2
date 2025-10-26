@@ -1,49 +1,48 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Login - TAASHOP')
 
-@section('content')
-<section class="auth-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="auth-card">
-                    <h2 class="auth-title text-center">Login Akun</h2>
-                    <p class="auth-subtitle text-center">Selamat datang kembali! Silakan masuk untuk melanjutkan.</p>
+@section('auth-title', 'Masuk ke Akun Anda')
 
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+@section('auth-form')
+<form method="POST" action="{{ route('login') }}">
+    @csrf
 
-                    <form action="{{ route('login.post') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Alamat Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                                <label class="form-check-label" for="remember">
-                                    Ingat Saya
-                                </label>
-                            </div>
-                            <a href="#" class="auth-link">Lupa Password?</a>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
-                        </div>
-                    </form>
-                    <p class="auth-bottom-text text-center mt-4">Belum punya akun? <a href="{{ route('register') }}" class="auth-link">Daftar di sini</a></p>
-                </div>
-            </div>
-        </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Alamat Email</label>
+        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        @error('email')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
     </div>
-</section>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        @error('password')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+
+    <div class="mb-3 form-check">
+        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+        <label class="form-check-label" for="remember">
+            Ingat Saya
+        </label>
+    </div>
+
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-lg">
+            Login
+        </button>
+    </div>
+</form>
+@endsection
+
+@section('auth-footer-link')
+<p class="text-muted">Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a></p>
 @endsection

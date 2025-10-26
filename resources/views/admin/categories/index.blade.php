@@ -7,10 +7,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card" data-aos="fade-up">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="m-0">All Categories</h5>
-                    <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i> Add New</a>
-                </div>
+                @include('admin.layouts.partials._card-header-index', ['title' => 'All Categories', 'create_route' => route('admin.categories.create')])
                 <div class="card-body p-0">
                     <table class="table table-hover m-0">
                         <thead class="table-light">

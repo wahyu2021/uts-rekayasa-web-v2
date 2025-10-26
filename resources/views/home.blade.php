@@ -40,25 +40,25 @@
             </div>
             <div class="row g-5">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card d-flex flex-column align-items-center h-100">
-                        <div class="feature-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-gem"></i></div>
-                        <h5>Kualitas Jahitan Halus</h5>
-                        <p>Setiap jahitan dikerjakan dengan teliti oleh tim kami, memastikan hasil yang rapi dan tahan lama.</p>
-                    </div>
+                    @include('components.info-card', [
+                        'icon' => 'fas fa-gem',
+                        'title' => 'Kualitas Jahitan Halus',
+                        'description' => 'Setiap jahitan dikerjakan dengan teliti oleh tim kami, memastikan hasil yang rapi dan tahan lama.'
+                    ])
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card d-flex flex-column align-items-center h-100">
-                        <div class="feature-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-tag"></i></div>
-                        <h5>Harga Jujur & Transparan</h5>
-                        <p>Dapatkan penawaran harga yang kompetitif dan transparan, tanpa mengorbankan kualitas material maupun hasil produksi.</p>
-                    </div>
+                    @include('components.info-card', [
+                        'icon' => 'fas fa-tag',
+                        'title' => 'Harga Jujur & Transparan',
+                        'description' => 'Dapatkan penawaran harga yang kompetitif dan transparan, tanpa mengorbankan kualitas material maupun hasil produksi.'
+                    ])
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card d-flex flex-column align-items-center h-100">
-                        <div class="feature-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-clock"></i></div>
-                        <h5>Fleksibel & Tepat Waktu</h5>
-                        <p>Kami mengerti kebutuhan Anda. Proses produksi kami fleksibel dan selalu berusaha menyelesaikan pesanan sesuai jadwal.</p>
-                    </div>
+                    @include('components.info-card', [
+                        'icon' => 'fas fa-clock',
+                        'title' => 'Fleksibel & Tepat Waktu',
+                        'description' => 'Kami mengerti kebutuhan Anda. Proses produksi kami fleksibel dan selalu berusaha menyelesaikan pesanan sesuai jadwal.'
+                    ])
                 </div>
             </div>
         </div>
@@ -75,13 +75,7 @@
                 @if($featuredProducts->isNotEmpty())
                     @foreach($featuredProducts as $product)
                         <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                            <div class="portfolio-card">
-                                <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : 'https://via.placeholder.com/400x500.png/f97316/ffffff?text=TAASHOP' }}" alt="{{ $product->name }}">
-                                <div class="portfolio-overlay">
-                                    <h6>{{ $product->name }}</h6>
-                                    <p>{{ $product->category->name ?? '' }}</p>
-                                </div>
-                            </div>
+                            @include('components.portfolio-card', ['product' => $product])
                         </div>
                     @endforeach
                 @else
@@ -106,61 +100,42 @@
             <div class="process-wrapper">
                 <div class="process-line"></div>
                 <div class="row g-5">
-                    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="process-item text-center">
-                            <div class="process-icon-wrapper d-inline-flex align-items-center justify-content-center">
-                                <div class="process-icon"><i class="fas fa-comments"></i></div>
-                                <span class="process-number d-flex align-items-center justify-content-center">1</span>
-                            </div>
-                            <h5 class="mt-4">Ngobrol & Konsultasi</h5>
-                            <p>Ceritakan ide desain Anda, kami siap mendengarkan dan memberikan masukan terbaik.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
-                        <div class="process-item text-center">
-                            <div class="process-icon-wrapper d-inline-flex align-items-center justify-content-center">
-                                <div class="process-icon"><i class="fas fa-file-alt"></i></div>
-                                <span class="process-number d-flex align-items-center justify-content-center">2</span>
-                            </div>
-                            <h5 class="mt-4">Penawaran & Sampel</h5>
-                            <p>Kami akan siapkan penawaran harga dan sampel jika diperlukan, agar sesuai dengan ekspektasi Anda.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
-                        <div class="process-item text-center">
-                            <div class="process-icon-wrapper d-inline-flex align-items-center justify-content-center">
-                                <div class="process-icon"><i class="fas fa-cogs"></i></div>
-                                <span class="process-number d-flex align-items-center justify-content-center">3</span>
-                            </div>
-                            <h5 class="mt-4">Proses Produksi</h5>
-                            <p>Setiap pesanan diproses dengan mesin modern dan tenaga ahli, menjamin hasil produksi yang presisi dan berkualitas tinggi.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3" data-aos="zoom-in" data-aos-delay="400">
-                        <div class="process-item text-center">
-                            <div class="process-icon-wrapper d-inline-flex align-items-center justify-content-center">
-                                <div class="process-icon"><i class="fas fa-shipping-fast"></i></div>
-                                <span class="process-number d-flex align-items-center justify-content-center">4</span>
-                            </div>
-                            <h5 class="mt-4">Kirim & Terima</h5>
-                            <p>Produk jadi kami kemas rapi dan kirimkan langsung ke alamat Anda dengan aman.</p>
-                        </div>
-                    </div>
+                    @include('components.process-step', [
+                        'number' => '1',
+                        'icon' => 'fas fa-comments',
+                        'title' => 'Ngobrol & Konsultasi',
+                        'description' => 'Ceritakan ide desain Anda, kami siap mendengarkan dan memberikan masukan terbaik.',
+                        'delay' => '100'
+                    ])
+                    @include('components.process-step', [
+                        'number' => '2',
+                        'icon' => 'fas fa-file-alt',
+                        'title' => 'Penawaran & Sampel',
+                        'description' => 'Kami akan siapkan penawaran harga dan sampel jika diperlukan, agar sesuai dengan ekspektasi Anda.',
+                        'delay' => '200'
+                    ])
+                    @include('components.process-step', [
+                        'number' => '3',
+                        'icon' => 'fas fa-cogs',
+                        'title' => 'Proses Produksi',
+                        'description' => 'Setiap pesanan diproses dengan mesin modern dan tenaga ahli, menjamin hasil produksi yang presisi dan berkualitas tinggi.',
+                        'delay' => '300'
+                    ])
+                    @include('components.process-step', [
+                        'number' => '4',
+                        'icon' => 'fas fa-shipping-fast',
+                        'title' => 'Kirim & Terima',
+                        'description' => 'Produk jadi kami kemas rapi dan kirimkan langsung ke alamat Anda dengan aman.',
+                        'delay' => '400'
+                    ])
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section">
-        <div class="container">
-            <div class="cta-section p-5 text-center" data-aos="zoom-in">
-                <h2 class="mb-3">Wujudkan Pakaian Kustom Impian Anda Sekarang!</h2>
-                <p class="lead mb-4">Tim kami siap membantu Anda menciptakan jersey basket, PDL/PDH, jersey futsal & esport, hoodie, atau jaket dengan kualitas terbaik. Hubungi kami untuk konsultasi gratis!</p>
-                <a href="https://wa.me/62812345678" class="btn btn-light btn-lg">
-                    <i class="fab fa-whatsapp me-2"></i> Hubungi Kami Sekarang
-                </a>
-            </div>
-        </div>
-    </section>
+    @include('components.cta-section', [
+    'title' => 'Wujudkan Pakaian Kustom Impian Anda Sekarang!',
+    'subtitle' => 'Tim kami siap membantu Anda menciptakan jersey basket, PDL/PDH, jersey futsal & esport, hoodie, atau jaket dengan kualitas terbaik. Hubungi kami untuk konsultasi gratis!'
+])
 
 @endsection

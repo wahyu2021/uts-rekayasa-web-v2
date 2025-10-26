@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
@@ -22,23 +20,30 @@ class CartController extends Controller
             return Cart::firstOrCreate(['user_id' => Auth::id()]);
         } else {
             $sessionId = session()->getId();
+
             return Cart::firstOrCreate(['session_id' => $sessionId]);
         }
     }
 
+    /**
+     * Menambahkan produk ke keranjang, atau membuat keranjang baru jika belum ada.
+     * Juga menangani logika "Beli Sekarang" dengan membersihkan keranjang terlebih dahulu.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function add(Request $request, Product $product)
     {
         try {
             $quantity = $request->input('quantity', 1);
-            Log::info('Received quantity for add to cart: ' . $quantity);
+            Log::info('Received quantity for add to cart: '.$quantity);
             $buyNow = $request->boolean('buy_now', false);
 
-            // Basic validation for quantity
-            if (!is_numeric($quantity) || $quantity < 1) {
+            if (! is_numeric($quantity) || $quantity < 1) {
                 return response()->json(['success' => false, 'message' => 'Invalid quantity provided.'], 400);
             }
 
-            // Check if product stock is sufficient
             if ($product->stock < $quantity) {
                 return response()->json(['success' => false, 'message' => 'Not enough stock available.'], 400);
             }
@@ -46,15 +51,13 @@ class CartController extends Controller
             $cart = $this->getCart();
 
             if ($buyNow) {
-                // For 'Buy Now', clear existing cart items and add only this product
-                $cart->items()->delete(); // Clear all items from the cart
+                $cart->items()->delete();
                 $cartItem = $cart->items()->create([
                     'product_id' => $product->id,
                     'quantity' => $quantity,
                     'price' => $product->price,
                 ]);
             } else {
-                // For regular 'Add to Cart'
                 $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
                 if ($cartItem) {
@@ -69,31 +72,38 @@ class CartController extends Controller
                 }
             }
 
-            $cart->refresh(); // Refresh the cart to reload its items relationship
+            $cart->refresh();
 
-            // Update cart_count for frontend if needed
             $cartCount = $cart->items()->sum('quantity');
-            Log::info('Cart items after add: ' . $cart->items()->count());
-            Log::info('Calculated cart count: ' . $cartCount);
+            Log::info('Cart items after add: '.$cart->items()->count());
+            Log::info('Calculated cart count: '.$cartCount);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Product added to cart successfully!',
-                'cart_count' => $cartCount
+                'cart_count' => $cartCount,
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Error adding product to cart: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('Error adding product to cart: '.$e->getMessage(), ['exception' => $e]);
+
             return response()->json(['success' => false, 'message' => 'An unexpected error occurred. Please try again.'], 500);
         }
     }
 
+    /**
+     * Memperbarui jumlah produk di dalam keranjang.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, Product $product)
     {
         try {
             $quantity = $request->input('quantity');
 
-            if (!is_numeric($quantity) || $quantity < 1) {
+            if (! is_numeric($quantity) || $quantity < 1) {
                 return response()->json(['success' => false, 'message' => 'Invalid quantity provided.'], 400);
             }
 
@@ -107,24 +117,30 @@ class CartController extends Controller
                 $cartItem->quantity = $quantity;
                 $cartItem->save();
 
-                // Update cart_count for frontend if needed
                 $cartCount = $cart->items()->sum('quantity');
 
                 return response()->json([
                     'success' => true,
                     'message' => 'Cart updated successfully!',
-                    'cart_count' => $cartCount
+                    'cart_count' => $cartCount,
                 ]);
             }
 
             return response()->json(['success' => false, 'message' => 'Product not found in cart.'], 404);
 
         } catch (\Exception $e) {
-            Log::error('Error updating product in cart: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('Error updating product in cart: '.$e->getMessage(), ['exception' => $e]);
+
             return response()->json(['success' => false, 'message' => 'An unexpected error occurred. Please try again.'], 500);
         }
     }
 
+    /**
+     * Menghapus produk dari keranjang.
+     *
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function remove(Product $product)
     {
         try {
@@ -134,35 +150,47 @@ class CartController extends Controller
             if ($cartItem) {
                 $cartItem->delete();
 
-                // Update cart_count for frontend if needed
                 $cartCount = $cart->items()->sum('quantity');
 
                 return response()->json([
                     'success' => true,
                     'message' => 'Product removed from cart successfully!',
-                    'cart_count' => $cartCount
+                    'cart_count' => $cartCount,
                 ]);
             }
 
             return response()->json(['success' => false, 'message' => 'Product not found in cart.'], 404);
 
         } catch (\Exception $e) {
-            Log::error('Error removing product from cart: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('Error removing product from cart: '.$e->getMessage(), ['exception' => $e]);
+
             return response()->json(['success' => false, 'message' => 'An unexpected error occurred. Please try again.'], 500);
         }
     }
 
+    /**
+     * Menampilkan halaman keranjang belanja dengan semua item di dalamnya.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $cart = $this->getCart();
         $cartItems = $cart->items()->with('product')->get();
+
         return view('cart.index', compact('cartItems'));
     }
 
+    /**
+     * Menampilkan halaman checkout dengan semua item dari keranjang.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function checkout()
     {
         $cart = $this->getCart();
         $cartItems = $cart->items()->with('product')->get();
+
         return view('checkout.index', compact('cartItems'));
     }
 }

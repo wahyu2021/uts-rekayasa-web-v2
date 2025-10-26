@@ -10,16 +10,21 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan halaman daftar kategori di panel admin.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
         $categories = Category::latest()->paginate(5);
+
         return view('admin.categories.index', compact('categories'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk membuat kategori baru.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -27,7 +32,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan kategori baru yang dibuat ke dalam database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -41,11 +49,14 @@ class CategoryController extends Controller
         Category::create($validatedData);
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category created successfully.');
+            ->with('success', 'Category created successfully.');
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail kategori (dialihkan ke halaman edit).
+     *
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\Contracts\View\View
      */
     public function show(Category $category)
     {
@@ -53,7 +64,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit kategori yang sudah ada.
+     *
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit(Category $category)
     {
@@ -61,12 +75,16 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data kategori yang sudah ada di dalam database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Category $category)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
             'description' => 'nullable|string',
         ]);
 
@@ -75,17 +93,20 @@ class CategoryController extends Controller
         $category->update($validatedData);
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category updated successfully.');
+            ->with('success', 'Category updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus kategori dari database.
+     *
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Category $category)
     {
         $category->delete();
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category deleted successfully.');
+            ->with('success', 'Category deleted successfully.');
     }
 }

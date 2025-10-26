@@ -4,16 +4,11 @@
 
 @section('content')
 
-    <section class="hero-section-small" style="background-image: url('{{ asset('images/bg-hero-about.jpg') }}'); background-size: cover; background-position: center;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h1 class="hero-title-small">Tentang Kami</h1>
-                    <p class="hero-subtitle-small">Mengenal lebih dekat TAASHOP, mitra terpercaya Anda untuk produksi pakaian kustom berkualitas tinggi.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('components.hero-small', [
+    'title' => 'Tentang Kami',
+    'subtitle' => 'Mengenal lebih dekat TAASHOP, mitra terpercaya Anda untuk produksi pakaian kustom berkualitas tinggi.',
+    'imageUrl' => asset('images/bg-hero-about.jpg')
+])
 
     <section class="section">
         <div class="container">
@@ -58,40 +53,33 @@
             </div>
             <div class="row g-4">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="value-card d-flex flex-column align-items-center">
-                        <div class="value-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-gem"></i></div>
-                        <h5>Kualitas Terbaik</h5>
-                        <p>Kami tidak pernah berkompromi pada kualitas. Dari pemilihan bahan hingga proses jahitan, semuanya kami perhatikan dengan detail.</p>
-                    </div>
+                    @include('components.info-card', [
+                        'icon' => 'fas fa-gem',
+                        'title' => 'Kualitas Terbaik',
+                        'description' => 'Kami tidak pernah berkompromi pada kualitas. Dari pemilihan bahan hingga proses jahitan, semuanya kami perhatikan dengan detail.'
+                    ])
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="value-card d-flex flex-column align-items-center">
-                        <div class="value-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-users"></i></div>
-                        <h5>Kepuasan Pelanggan</h5>
-                        <p>Bagi kami, Anda bukan hanya pelanggan, tetapi partner. Kepuasan Anda adalah prioritas utama kami.</p>
-                    </div>
+                    @include('components.info-card', [
+                        'icon' => 'fas fa-users',
+                        'title' => 'Kepuasan Pelanggan',
+                        'description' => 'Bagi kami, Anda bukan hanya pelanggan, tetapi partner. Kepuasan Anda adalah prioritas utama kami.'
+                    ])
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="value-card d-flex flex-column align-items-center">
-                        <div class="value-icon d-inline-flex align-items-center justify-content-center"><i class="fas fa-handshake"></i></div>
-                        <h5>Kejujuran & Amanah</h5>
-                        <p>Kami membangun bisnis ini di atas kepercayaan. Kami selalu transparan dalam setiap proses dan menjaga amanah yang Anda berikan.</p>
-                    </div>
+                    @include('components.info-card', [
+                        'icon' => 'fas fa-handshake',
+                        'title' => 'Kejujuran & Amanah',
+                        'description' => 'Kami membangun bisnis ini di atas kepercayaan. Kami selalu transparan dalam setiap proses dan menjaga amanah yang Anda berikan.'
+                    ])
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section">
-        <div class="container">
-            <div class="cta-section p-5 text-center" data-aos="zoom-in">
-                <h2 class="mb-3">Siap Memulai Proyek Pakaian Kustom Anda?</h2>
-                <p class="lead mb-4">Hubungi kami sekarang untuk konsultasi gratis dan wujudkan desain impian Anda dengan kualitas terbaik.</p>
-                <a href="https://wa.me/62812345678" class="btn btn-light btn-lg">
-                    <i class="fab fa-whatsapp me-2"></i> Hubungi Kami Sekarang
-                </a>
-            </div>
-        </div>
-    </section>
+    @include('components.cta-section', [
+    'title' => 'Siap Memulai Proyek Pakaian Kustom Anda?',
+    'subtitle' => 'Hubungi kami sekarang untuk konsultasi gratis dan wujudkan desain impian Anda dengan kualitas terbaik.'
+])
 
 @endsection

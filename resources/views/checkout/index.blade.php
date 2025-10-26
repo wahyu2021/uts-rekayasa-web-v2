@@ -3,16 +3,11 @@
 @section('title', 'Checkout - TAASHOP')
 
 @section('content')
-    <section class="hero-section-small" style="background-image: url('{{ asset('images/bg-hero-product.jpg') }}'); background-size: cover; background-position: center;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h1 class="hero-title-small">Checkout</h1>
-                    <p class="hero-subtitle-small">Selesaikan pesanan Anda dengan mudah dan aman.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('components.hero-small', [
+    'title' => 'Checkout',
+    'subtitle' => 'Selesaikan pesanan Anda dengan mudah dan aman.',
+    'imageUrl' => asset('images/bg-hero-product.jpg')
+])
 
     <section class="section section-compact-top">
         <div class="container">
@@ -35,20 +30,7 @@
                                 <div class="card-body">
                                     @php $total = 0; @endphp
                                     @foreach($cartItems as $item)
-                                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-                                            <div class="d-flex align-items-center">
-                                                @if($item->product->image_path)
-                                                    <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--border-radius-sm);">
-                                                @else
-                                                     <img src="https://via.placeholder.com/60x60.png/f97316/ffffff?text=TAASHOP" alt="{{ $item->product->name }}" class="img-thumbnail me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--border-radius-sm);">
-                                                @endif
-                                                <div>
-                                                    <h6 class="mb-0 text-secondary">{{ $item->product->name }}</h6>
-                                                    <small class="text-muted">Jumlah: {{ $item->quantity }}</small>
-                                                </div>
-                                            </div>
-                                            <span class="fw-bold text-secondary">Rp{{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
-                                        </div>
+                                        @include('components.checkout-item', ['item' => $item])
                                         @php $total += $item->price * $item->quantity; @endphp
                                     @endforeach
                                     <div class="d-flex justify-content-between align-items-center h5 mt-4">

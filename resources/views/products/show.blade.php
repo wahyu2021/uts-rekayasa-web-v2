@@ -22,15 +22,7 @@
                     <p class="lead">{{ $product->description }}</p>
                     <p class="fw-bold">Stok Tersedia: {{ $product->stock }}</p>
 
-                    <div class="d-flex align-items-center mb-4">
-                        <label for="productQuantity" class="form-label me-3 mb-0">Jumlah:</label>
-                        <input type="number" id="productQuantity" class="form-control w-auto" value="1" min="1" max="{{ $product->stock }}">
-                    </div>
-
-                    <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-primary btn-lg" id="addToCartBtn" data-product-id="{{ $product->id }}">Tambahkan Ke Keranjang</button>
-                        <button type="button" class="btn btn-outline-primary btn-lg" id="buyNowBtn" data-product-id="{{ $product->id }}">Beli Sekarang</button>
-                    </div>
+                    @include('components.add-to-cart-form', ['product' => $product])
                 </div>
             </div>
         </div>
