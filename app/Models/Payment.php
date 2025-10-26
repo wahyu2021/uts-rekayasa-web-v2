@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Order;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Payment extends Model
+{
+    protected $fillable = [
+        'order_id',
+        'payment_method',
+        'payment_reference',
+        'payment_date',
+        'amount',
+        'status',
+    ];
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+}
