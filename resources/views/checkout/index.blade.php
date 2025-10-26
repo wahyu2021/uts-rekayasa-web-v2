@@ -1,87 +1,103 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-center mb-8">Checkout</h1>
+@section('title', 'Checkout - TAASHOP')
 
-    @if(empty($cart))
-        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-            <p class="text-gray-600 text-lg">Your cart is empty. Please add some products before checking out.</p>
-            <a href="{{ route('products.index') }}" class="mt-4 inline-block bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">Continue Shopping</a>
+@section('content')
+    <section class="hero-section-small" style="background-image: url('{{ asset('images/bg-hero-product.jpg') }}'); background-size: cover; background-position: center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="hero-title-small">Checkout</h1>
+                    <p class="hero-subtitle-small">Selesaikan pesanan Anda dengan mudah dan aman.</p>
+                </div>
+            </div>
         </div>
-    @else
-        <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Order Summary -->
-            <div class="lg:w-1/2 bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-semibold mb-4">Order Summary</h2>
-                <div class="border-b border-gray-200 pb-4 mb-4">
-                    @php $total = 0; @endphp
-                    @foreach($cart as $id => $details)
-                        <div class="flex justify-between items-center mb-2">
-                            <div class="flex items-center">
-                                <img src="{{ asset('storage/' . $details['image']) }}" alt="{{ $details['name'] }}" class="w-16 h-16 object-cover rounded-md mr-4">
-                                <div>
-                                    <p class="font-medium">{{ $details['name'] }}</p>
-                                    <p class="text-sm text-gray-500">Quantity: {{ $details['quantity'] }}</p>
+    </section>
+
+    <section class="section section-compact-top">
+        <div class="container">
+            @if(empty($cart))
+                <div class="text-center py-5">
+                    <i class="fas fa-shopping-cart fa-5x text-muted mb-4"></i>
+                    <h3 class="text-secondary mb-3">Keranjang Anda kosong</h3>
+                    <p class="lead text-muted mb-4">Silakan tambahkan produk ke keranjang Anda sebelum melanjutkan ke checkout.</p>
+                    <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg">Lanjutkan Belanja</a>
+                </div>
+            @else
+                <form action="{{ route('checkout.store') }}" method="POST">
+                    @csrf
+                    <div class="row g-5">
+                        <div class="col-lg-6">
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header bg-white py-3">
+                                    <h5 class="mb-0 text-secondary">Ringkasan Pesanan</h5>
+                                </div>
+                                <div class="card-body">
+                                    @php $total = 0; @endphp
+                                    @foreach($cart as $id => $details)
+                                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                                            <div class="d-flex align-items-center">
+                                                @if($details['image'])
+                                                    <img src="{{ asset('storage/' . $details['image']) }}" alt="{{ $details['name'] }}" class="img-thumbnail me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--border-radius-sm);">
+                                                @else
+                                                     <img src="https://via.placeholder.com/60x60.png/f97316/ffffff?text=TAASHOP" alt="{{ $details['name'] }}" class="img-thumbnail me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--border-radius-sm);">
+                                                @endif
+                                                <div>
+                                                    <h6 class="mb-0 text-secondary">{{ $details['name'] }}</h6>
+                                                    <small class="text-muted">Jumlah: {{ $details['quantity'] }}</small>
+                                                </div>
+                                            </div>
+                                            <span class="fw-bold text-secondary">Rp{{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}</span>
+                                        </div>
+                                        @php $total += $details['price'] * $details['quantity']; @endphp
+                                    @endforeach
+                                    <div class="d-flex justify-content-between align-items-center h5 mt-4">
+                                        <span>Total Pembayaran:</span>
+                                        <span class="fw-bold text-primary">Rp{{ number_format($total, 0, ',', '.') }}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <span class="font-semibold">Rp{{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}</span>
                         </div>
-                        @php $total += $details['price'] * $details['quantity']; @endphp
-                    @endforeach
-                </div>
-                <div class="flex justify-between items-center text-xl font-bold">
-                    <span>Total:</span>
-                    <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
-                </div>
-            </div>
 
-            <!-- Checkout Form -->
-            <div class="lg:w-1/2 bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-semibold mb-4">Shipping Information</h2>
-                <form action="#" method="POST"> {{-- Replace # with your actual checkout processing route --}}
-                    @csrf
-                    <div class="mb-4">
-                        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Full Name:</label>
-                        <input type="text" id="name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-                        <input type="email" id="email" name="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address:</label>
-                        <input type="text" id="address" name="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City:</label>
-                        <input type="text" id="city" name="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="zip" class="block text-gray-700 text-sm font-bold mb-2">Zip Code:</label>
-                        <input type="text" id="zip" name="zip" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                    </div>
+                        <div class="col-lg-6">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-white py-3">
+                                    <h5 class="mb-0 text-secondary">Informasi Pengiriman & Pembayaran</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nama Lengkap</label>
+                                        <input type="text" id="name" name="name" class="form-control" value="{{ auth()->user() ? auth()->user()->name : '' }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user() ? auth()->user()->email : '' }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shipping_address" class="form-label">Alamat Pengiriman Lengkap</label>
+                                        <textarea id="shipping_address" name="shipping_address" class="form-control" rows="4" placeholder="Contoh: Jl. Pahlawan No. 123, Kel. Suka Maju, Kec. Damai, Kota Bandung, Jawa Barat 40123" required></textarea>
+                                    </div>
 
-                    <h2 class="text-2xl font-semibold mb-4">Payment Information</h2>
-                    <div class="mb-4">
-                        <label for="card_number" class="block text-gray-700 text-sm font-bold mb-2">Card Number:</label>
-                        <input type="text" id="card_number" name="card_number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="**** **** **** ****" required>
-                    </div>
-                    <div class="mb-4 flex gap-4">
-                        <div class="w-1/2">
-                            <label for="expiry_date" class="block text-gray-700 text-sm font-bold mb-2">Expiry Date:</label>
-                            <input type="text" id="expiry_date" name="expiry_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="MM/YY" required>
-                        </div>
-                        <div class="w-1/2">
-                            <label for="cvv" class="block text-gray-700 text-sm font-bold mb-2">CVV:</label>
-                            <input type="text" id="cvv" name="cvv" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="***" required>
+                                    <h5 class="mt-4 mb-3 text-secondary">Metode Pembayaran</h5>
+                                    <div class="mb-3">
+                                        <select name="payment_method" class="form-select" required>
+                                            <option value="" disabled selected>Pilih Metode Pembayaran</option>
+                                            <option value="credit_card">Kartu Kredit</option>
+                                            <option value="bank_transfer">Transfer Bank</option>
+                                            <option value="gopay">GoPay</option>
+                                            <option value="dana">DANA</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="d-grid mt-4">
+                                        <button type="submit" class="btn btn-primary btn-lg">Buat Pesanan</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <button type="submit" class="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition duration-300 w-full text-lg font-semibold">Place Order</button>
                 </form>
-            </div>
+            @endif
         </div>
-    @endif
-</div>
+    </section>
 @endsection

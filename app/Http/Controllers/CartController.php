@@ -39,13 +39,7 @@ class CartController extends Controller
 
             session()->put('cart', $cart);
 
-            $totalQuantity = 0;
-            foreach ($cart as $item) {
-                $totalQuantity += $item['quantity'];
-            }
-            session()->put('cart_count', $totalQuantity);
-
-            return response()->json(['success' => true, 'message' => 'Product added to cart successfully!', 'cart_count' => $totalQuantity]);
+            return response()->json(['success' => true, 'message' => 'Product added to cart successfully!']);
 
         } catch (\Exception $e) {
             // Log the exception for debugging purposes
@@ -72,13 +66,7 @@ class CartController extends Controller
                 $cart[$product->id]['quantity'] = $quantity;
                 session()->put('cart', $cart);
 
-                $totalQuantity = 0;
-                foreach ($cart as $item) {
-                    $totalQuantity += $item['quantity'];
-                }
-                session()->put('cart_count', $totalQuantity);
-
-                return response()->json(['success' => true, 'message' => 'Cart updated successfully!', 'cart_count' => $totalQuantity]);
+                return response()->json(['success' => true, 'message' => 'Cart updated successfully!']);
             }
 
             return response()->json(['success' => false, 'message' => 'Product not found in cart.'], 404);
@@ -98,13 +86,7 @@ class CartController extends Controller
                 unset($cart[$product->id]);
                 session()->put('cart', $cart);
 
-                $totalQuantity = 0;
-                foreach ($cart as $item) {
-                    $totalQuantity += $item['quantity'];
-                }
-                session()->put('cart_count', $totalQuantity);
-
-                return response()->json(['success' => true, 'message' => 'Product removed from cart successfully!', 'cart_count' => $totalQuantity]);
+                return response()->json(['success' => true, 'message' => 'Product removed from cart successfully!']);
             }
 
             return response()->json(['success' => false, 'message' => 'Product not found in cart.'], 404);

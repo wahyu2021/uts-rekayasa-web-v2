@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         // Share cart count with the navbar view
         View::composer('components.navbar', function ($view) {
             $cart = session()->get('cart', []);
-            $cartCount = session()->get('cart_count', 0);
+            $cartCount = array_sum(array_column($cart, 'quantity'));
             $view->with('cartCount', $cartCount);
         });
     }
