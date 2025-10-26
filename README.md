@@ -1,61 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TAASHOP - E-Commerce untuk Jasa Konveksi
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://raw.githubusercontent.com/gemini-testing/gemini-project-images/main/taashop-placeholder.png" alt="TAASHOP Screenshot">
 </p>
 
-## About Laravel
+<p align="center">
+    <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel 12">
+    <img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php" alt="PHP 8.2">
+    <img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite" alt="Vite">
+    <img src="https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap" alt="Bootstrap 5">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tentang Proyek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**TAASHOP** adalah aplikasi web e-commerce dan portofolio yang dirancang khusus untuk layanan konveksi. Dibangun dengan **Laravel 12**, aplikasi ini menyediakan platform yang elegan bagi pelanggan untuk menjelajahi dan memesan produk, sekaligus memberikan kemudahan bagi admin untuk mengelola konten dan pesanan melalui panel admin yang intuitif.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Proyek ini telah melalui proses refaktorisasi ekstensif untuk menerapkan prinsip-prinsip **Clean Code**, termasuk pemisahan *view components*, dokumentasi *controller* yang lengkap, dan struktur kode yang rapi untuk kemudahan pemeliharaan.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Daftar Isi
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- [Fitur Utama](#fitur-utama)
+- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+- [Skema Database](#skema-database)
+- [Panduan Instalasi](#panduan-instalasi)
+- [Menjalankan Aplikasi](#menjalankan-aplikasi)
+- [Variabel Lingkungan](#variabel-lingkungan)
+- [Lisensi](#lisensi)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Fitur Utama
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 🛍️ Situs Publik
+- **Katalog Produk Dinamis**: Pengguna dapat melihat produk dengan mudah, dilengkapi dengan sistem filter berdasarkan kategori.
+- **Keranjang Belanja Interaktif**: Menambah, mengubah kuantitas, dan menghapus produk dari keranjang secara *real-time* melalui AJAX.
+- **Alur Checkout Fleksibel**: Mendukung alur "Beli Sekarang" untuk pembelian cepat satu item, dan "Checkout Pilihan" untuk beberapa item dari keranjang.
+- **Desain Responsif**: Tampilan yang optimal di berbagai perangkat, dari desktop hingga mobile.
+- **Halaman Informatif**: Halaman "Tentang Kami" dan detail produk yang dirancang dengan baik.
 
-### Premium Partners
+### 🔐 Panel Admin
+- **Dashboard Analitik**: Ringkasan data penjualan, total produk, kategori, dan pendapatan, dilengkapi dengan grafik penjualan 7 hari terakhir.
+- **Manajemen Konten (CRUD)**: Manajemen penuh untuk Produk dan Kategori, termasuk upload gambar.
+- **Fitur Unggulan**: Kemampuan untuk menandai produk sebagai "unggulan" (best seller) dengan satu kali klik.
+- **Antarmuka yang Bersih**: Layout admin yang terstruktur dengan sidebar dan topbar yang terpisah untuk navigasi yang mudah.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Teknologi yang Digunakan
 
-## Contributing
+| Kategori | Teknologi |
+| :--- | :--- |
+| **Backend** | PHP 8.2, Laravel 12 |
+| **Frontend** | Vite, SCSS, Bootstrap 5, JavaScript |
+| **Database** | SQLite |
+| **Dev Tools** | Composer, NPM, `laravel/pint`, `concurrently` |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Skema Database
 
-## Code of Conduct
+Struktur database utama terdiri dari tabel-tabel berikut dengan relasi yang jelas:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `users`: Menyimpan data pengguna dan admin.
+- `products`: Data produk, termasuk harga, stok, dan relasi ke `categories`.
+- `categories`: Kategori untuk produk.
+- `carts` & `cart_items`: Menyimpan data keranjang belanja untuk pengguna yang login maupun tamu (berbasis session).
+- `orders` & `order_items`: Mencatat semua pesanan yang berhasil dibuat.
+- `payments`: Menyimpan detail metode dan status pembayaran untuk setiap pesanan.
 
-## Security Vulnerabilities
+## Panduan Instalasi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Proyek ini menyertakan skrip setup otomatis untuk mempermudah instalasi.
 
-## License
+1.  **Clone Repository**
+    ```bash
+    git clone <URL_REPOSITORY_ANDA>
+    cd praktikum_uts_v2
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2.  **Jalankan Skrip Setup**
+    ```bash
+    composer setup
+    ```
+    Perintah ini akan secara otomatis menjalankan:
+    - `composer install`
+    - `npm install`
+    - Membuat file `.env` dari `.env.example`
+    - `php artisan key:generate`
+    - `php artisan migrate --force`
+    - `npm run build`
+
+    > **Catatan**: Pastikan Anda memiliki **Composer** dan **Node.js/NPM** terinstal di sistem Anda.
+
+## Menjalankan Aplikasi
+
+Proyek ini dilengkapi skrip untuk menjalankan semua layanan pengembangan (server PHP, Vite, queue) secara bersamaan.
+
+1.  **Jalankan Server Pengembangan**
+    ```bash
+    composer run-script dev
+    ```
+
+2.  **Akses Aplikasi**
+    - **Situs Publik**: Buka browser dan kunjungi `http://127.0.0.1:8000`.
+    - **Panel Admin**: Kunjungi `http://127.0.0.1:8000/admin`.
+
+## Variabel Lingkungan
+
+File `.env` akan dibuat secara otomatis. Variabel utama yang perlu diperhatikan adalah:
+
+```
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=sqlite
+# DB_DATABASE=database/database.sqlite (path absolut jika diperlukan)
+```
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah **Lisensi MIT**.
