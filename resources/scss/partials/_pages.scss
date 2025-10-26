@@ -488,3 +488,42 @@
 .section-compact-top {
   padding-top: 40px;
 }
+
+// ============================================
+// AUTH PAGES STYLES
+// ============================================
+.auth-section {
+    padding: 100px 0;
+    background-color: #f8f9fa;
+}
+
+.auth-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.auth-title {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.auth-link {
+    color: #F97316;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.auth-bottom-text {
+    color: #666;
+}
