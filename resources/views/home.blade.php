@@ -67,38 +67,31 @@
     <section id="portofolio" class="section bg-light">
         <div class="container">
             <div class="section-header text-center" data-aos="fade-up">
-                <span class="section-tag">Hasil Karya</span>
-                <h2>Contoh Produksi Kami</h2>
-                <p class="lead">Lihatlah beberapa hasil karya terbaik kami yang telah dipercayakan oleh berbagai klien. Setiap produk adalah bukti komitmen kami pada kualitas dan detail.</p>
+                <span class="section-tag">Produk Unggulan</span>
+                <h2>Koleksi Terbaik dari Kami</h2>
+                <p class="lead">Jelajahi beberapa produk terbaik kami yang menjadi favorit para pelanggan. Kualitas dan gaya dalam satu paket.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="portfolio-card">
-                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Seragam Perusahaan">
-                        <div class="portfolio-overlay">
-                            <h6>Kaos Komunitas</h6>
-                            <p>Desain simpel dan nyaman untuk acara outdoor.</p>
+                @if($featuredProducts->isNotEmpty())
+                    @foreach($featuredProducts as $product)
+                        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                            <div class="portfolio-card">
+                                <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : 'https://via.placeholder.com/400x500.png/f97316/ffffff?text=TAASHOP' }}" alt="{{ $product->name }}">
+                                <div class="portfolio-overlay">
+                                    <h6>{{ $product->name }}</h6>
+                                    <p>{{ $product->category->name ?? '' }}</p>
+                                </div>
+                            </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="col-12">
+                        <p class="text-center">Belum ada produk unggulan.</p>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="portfolio-card">
-                        <img src="https://images.unsplash.com/photo-1578932750294-708c28814355?w=400&h=500&fit=crop" alt="Jaket Komunitas">
-                        <div class="portfolio-overlay">
-                            <h6>Jaket Bomber Kustom</h6>
-                            <p>Pilihan bahan premium dengan detail bordir presisi.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="portfolio-card">
-                        <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&h=500&fit=crop" alt="Polo Shirt">
-                        <div class="portfolio-overlay">
-                            <h6>Polo Shirt Event</h6>
-                            <p>Bahan adem dan menyerap keringat untuk kegiatan indoor.</p>
-                        </div>
-                    </div>
-                </div>
+                @endif
+            </div>
+            <div class="text-center mt-5">
+                <a href="{{ route('products.index') }}" class="btn btn-primary">Lihat Semua Produk</a>
             </div>
         </div>
     </section>

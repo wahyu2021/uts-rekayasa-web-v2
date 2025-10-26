@@ -4,6 +4,7 @@
 @use './partials/components';
 @use './partials/layout';
 @use './partials/pages';
+@use 'admin';
 $primary: #F97316; // Define custom primary color
 @use "bootstrap" with (
   $primary: $primary

@@ -80,7 +80,7 @@
             color: #fff !important;
 
             &::after {
-                // We are not using the default caret, so we hide it
+
                 display: none !important;
             }
         }
@@ -91,13 +91,11 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             border-radius: var(--border-radius);
             padding: 0.5rem 0;
-            margin-top: 0.5rem !important;
         }
 
         .dropdown-item {
             color: rgba(255, 255, 255, 0.85);
             font-weight: 600;
-            padding: 0.75rem 1.5rem;
             transition: all 0.3s ease;
 
             i {
@@ -106,11 +104,11 @@
             }
 
             &:hover, &:focus {
-                background-color: var(--color-primary);
-                color: #fff;
+                background-color: transparent;
+                color: var(--color-primary);;
 
                 i {
-                    color: #fff;
+                    color: var(--color-primary);;
                 }
             }
         }

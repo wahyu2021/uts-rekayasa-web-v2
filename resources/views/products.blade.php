@@ -19,84 +19,73 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="filter-section mb-4">
-                        <h3 class="filter-title mb-3">Filter Berdasarkan Kategori</h3>
-                        <div class="filter-options">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input filter-checkbox" type="checkbox" value="all" id="filterAll" checked>
-                                <label class="form-check-label" for="filterAll">Semua</label>
+                    <form action="{{ route('products.index') }}" method="GET">
+                        <div class="filter-section mb-4">
+                            <h3 class="filter-title mb-3">Filter Berdasarkan Kategori</h3>
+                            <div class="filter-options">
+                                @if($categories->isNotEmpty())
+                                    @foreach($categories as $category)
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->slug }}" id="filter-{{ $category->slug }}"
+                                                @if(in_array($category->slug, $selectedCategories)) checked @endif>
+                                            <label class="form-check-label" for="filter-{{ $category->slug }}">{{ $category->name }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input filter-checkbox" type="checkbox" value="jersey" id="filterJersey">
-                                <label class="form-check-label" for="filterJersey">Jersey</label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input filter-checkbox" type="checkbox" value="pdlpdh" id="filterPdlPdh">
-                                <label class="form-check-label" for="filterPdlPdh">PDL/PDH</label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input filter-checkbox" type="checkbox" value="hoodiejaket" id="filterHoodieJaket">
-                                <label class="form-check-label" for="filterHoodieJaket">Hoodie & Jaket</label>
-                            </div>
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Terapkan Filter</button>
+                            @if(!empty($selectedCategories))
+                                <a href="{{ route('products.index') }}" class="btn btn-outline-secondary mt-2 w-100">Reset Filter</a>
+                            @endif
                         </div>
-                        <button id="applyFilterBtn" class="btn btn-primary mt-3 w-100">Terapkan Filter</button>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-lg-9">
                     <div class="products-grid">
-                        <div class="product-card d-flex flex-column" data-aos="fade-up" data-category="jersey">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Produk 1">
-                                <div class="product-badge">Best Seller</div>
-                            </div>
-                            <div class="product-info">
-                                <h5>Kaos Polos Premium</h5>
-                                <p class="product-desc">Kaos polos dengan bahan katun combed 30s yang adem dan nyaman.</p>
-                                <div class="product-specs">
-                                    <div class="spec-item">Mulai dari Rp 55.000</div>
+                        @forelse ($products as $product)
+                            <div class="product-card d-flex flex-column" data-aos="fade-up" data-category="{{ $product->category->slug ?? '' }}"
+                                data-bs-toggle="modal" data-bs-target="#productDetailModal"
+                                data-id="{{ $product->id }}"
+                                data-name="{{ $product->name }}"
+                                data-description="{{ $product->description }}"
+                                data-price="{{ number_format($product->price, 0, ',', '.') }}"
+                                data-image="{{ $product->image_path ? asset('storage/' . $product->image_path) : 'https://via.placeholder.com/400x500.png/f97316/ffffff?text=TAASHOP' }}"
+                                data-stock="{{ $product->stock }}"
+                                style="cursor: pointer;">
+                                <div class="product-image">
+                                    <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : 'https://via.placeholder.com/400x500.png/f97316/ffffff?text=TAASHOP' }}" alt="{{ $product->name }}">
+                                    @if($product->is_featured)
+                                        <div class="product-badge">Best Seller</div>
+                                    @endif
+                                </div>
+                                <div class="product-info">
+                                    <h5>{{ $product->name }}</h5>
+                                    <p class="product-desc">{{ Str::limit($product->description, 100) }}</p>
+                                    <div class="product-specs">
+                                        <div class="spec-item">Mulai dari Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @empty
+                            <div class="col-12">
+                                <p class="text-center">Tidak ada produk yang ditemukan.</p>
+                            </div>
+                        @endforelse
 
-                        <div class="product-card d-flex flex-column" data-aos="fade-up" data-aos-delay="100" data-category="jersey">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&h=500&fit=crop" alt="Produk 2">
-                            </div>
-                            <div class="product-info">
-                                <h5>Polo Shirt Bordir</h5>
-                                <p class="product-desc">Polo shirt dengan bahan lacoste dan bordir logo kustom.</p>
-                                <div class="product-specs">
-                                    <div class="spec-item">Mulai dari Rp 85.000</div>
+                        {{-- Next Page Card --}}
+                        @if ($products->hasMorePages())
+                            <a href="{{ $products->nextPageUrl() }}" class="product-card next-page-card d-flex flex-column justify-content-center align-items-center text-center" data-aos="fade-up">
+                                <div class="next-page-icon mb-3">
+                                    <i class="fas fa-arrow-right fa-3x"></i>
                                 </div>
-                            </div>
-                        </div>
+                                <h5 class="next-page-title">Lihat Halaman Selanjutnya</h5>
+                                <p class="next-page-subtitle">Jelajahi lebih banyak produk menarik dari kami</p>
+                            </a>
+                        @endif
+                    </div>
 
-                        <div class="product-card" data-aos="fade-up" data-aos-delay="200" data-category="hoodiejaket">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1578932750294-708c28814355?w=400&h=500&fit=crop" alt="Produk 3">
-                                <div class="product-badge">New!</div>
-                            </div>
-                            <div class="product-info">
-                                <h5>Jaket Bomber Keren</h5>
-                                <p class="product-desc">Jaket bomber dengan bahan taslan dan furing yang nyaman.</p>
-                                <div class="product-specs">
-                                    <div class="spec-item">Mulai dari Rp 150.000</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="product-card" data-aos="fade-up" data-aos-delay="300" data-category="pdlpdh">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1603252109360-778baaf41393?w=400&h=500&fit=crop" alt="Produk 4">
-                            </div>
-                            <div class="product-info">
-                                <h5>Kemeja PDL Lapangan</h5>
-                                <p class="product-desc">Kemeja PDL dengan bahan ripstop yang kuat dan tahan lama.</p>
-                                <div class="product-specs">
-                                    <div class="spec-item">Mulai dari Rp 120.000</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="pagination-wrapper mt-5">
+                        {{ $products->links() }}
                     </div>
                 </div>
             </div>
@@ -104,3 +93,160 @@
     </section>
 
 @endsection
+
+<!-- Product Detail Modal -->
+<div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailModalLabel">Product Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="" class="img-fluid rounded mb-3" alt="Product Image" id="modalProductImage">
+                    </div>
+                    <div class="col-md-6">
+                        <h3 id="modalProductName"></h3>
+                        <p class="text-muted mb-2">Category: <span id="modalProductCategory"></span></p>
+                        <h4 class="text-primary mb-3" id="modalProductPrice"></h4>
+                        <p id="modalProductDescription"></p>
+                        <p class="fw-bold">Stock: <span id="modalProductStock"></span></p>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <label for="quantity" class="form-label me-2 mb-0">Quantity:</label>
+                            <input type="number" id="productQuantity" class="form-control w-auto" value="1" min="1">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-primary btn-lg" id="addToCartBtn">Add to Cart</button>
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="buyNowBtn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const productDetailModal = document.getElementById('productDetailModal');
+        const cartCountBadge = document.querySelector('.cart-count'); // Get the cart count badge
+
+        productDetailModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Button that triggered the modal
+
+            const id = button.dataset.id;
+            const name = button.dataset.name;
+            const description = button.dataset.description;
+            const price = button.dataset.price;
+            const image = button.dataset.image;
+            const stock = button.dataset.stock;
+            const category = button.dataset.category; // Assuming you have category slug on the card
+
+            // Update the modal's content.
+            const modalProductImage = productDetailModal.querySelector('#modalProductImage');
+            const modalProductName = productDetailModal.querySelector('#modalProductName');
+            const modalProductCategory = productDetailModal.querySelector('#modalProductCategory');
+            const modalProductPrice = productDetailModal.querySelector('#modalProductPrice');
+            const modalProductDescription = productDetailModal.querySelector('#modalProductDescription');
+            const modalProductStock = productDetailModal.querySelector('#modalProductStock');
+            const productQuantity = productDetailModal.querySelector('#productQuantity');
+            const addToCartBtn = productDetailModal.querySelector('#addToCartBtn');
+            const buyNowBtn = productDetailModal.querySelector('#buyNowBtn');
+
+            modalProductImage.src = image;
+            modalProductName.textContent = name;
+            modalProductCategory.textContent = category;
+            modalProductPrice.textContent = `Rp ${price}`;
+            modalProductDescription.textContent = description;
+            modalProductStock.textContent = stock;
+            productQuantity.value = 1; // Reset quantity
+            productQuantity.max = stock; // Set max quantity to stock
+
+            // Store product ID for cart/buy actions
+            addToCartBtn.dataset.productId = id;
+            buyNowBtn.dataset.productId = id;
+        });
+
+        // Handle Add to Cart button click
+        document.getElementById('addToCartBtn').addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const quantity = document.getElementById('productQuantity').value;
+
+            fetch(`{{ route('cart.add', ['product' => 'PRODUCT_ID_PLACEHOLDER']) }}`.replace('PRODUCT_ID_PLACEHOLDER', productId), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // If response is not OK, try to read it as text to get more info
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Update cart count in navbar
+                    if (cartCountBadge && data.cart_count !== undefined) {
+                        cartCountBadge.textContent = data.cart_count;
+                    }
+                    var modal = bootstrap.Modal.getInstance(productDetailModal);
+                    modal.hide();
+                } else {
+                    alert('Failed to add product to cart: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error adding to cart:', error);
+                alert('An error occurred while adding to cart. Check console for details.');
+            });
+        });
+
+        // Handle Buy Now button click
+        document.getElementById('buyNowBtn').addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const quantity = document.getElementById('productQuantity').value;
+
+            fetch(`{{ route('cart.add', ['product' => 'PRODUCT_ID_PLACEHOLDER']) }}`.replace('PRODUCT_ID_PLACEHOLDER', productId), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message + ' Redirecting to cart...');
+                    // Update cart count in navbar
+                    if (cartCountBadge && data.cart_count !== undefined) {
+                        cartCountBadge.textContent = data.cart_count;
+                    }
+                    window.location.href = '{{ route('cart.index') }}'; // Redirect to cart page
+                } else {
+                    alert('Failed to process "Buy Now": ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error during "Buy Now":', error);
+                alert('An error occurred during "Buy Now". Check console for details.');
+            });
+        });
+    });
+</script>
+@endpush

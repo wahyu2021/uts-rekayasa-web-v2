@@ -15,24 +15,20 @@
                         href="/products">Produk</a></li>
                 <li class="nav-item"><a class="nav-link {{ Request::is('about') ? 'active' : '' }}"
                         href="/about">Tentang Kami</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('cart.index') }}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge bg-primary rounded-pill cart-count">{{ $cartCount }}</span> {{-- Placeholder for cart item count --}}
+                    </a>
+                </li>
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::user()->name }}
+                            Halo, {{ Auth::user()->name }}
+                            <i class="fas fa-chevron-down fa-xs ms-2"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
-                                    My Profile
-                                </a>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
