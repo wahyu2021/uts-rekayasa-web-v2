@@ -9,7 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Support\Facades\Route; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -30,6 +30,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () { return redirect()->route('admin.dashboard'); });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('categories', [AdminCategoryController::class, 'index'])->name('categories.index');
     Route::get('categories/create', [AdminCategoryController::class, 'create'])->name('categories.create');
