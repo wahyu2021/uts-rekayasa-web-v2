@@ -120,4 +120,10 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
         return view('cart.index', compact('cart'));
     }
+
+    public function checkout()
+    {
+        $cart = session()->get('cart', []);
+        return view('checkout.index', compact('cart'));
+    }
 }

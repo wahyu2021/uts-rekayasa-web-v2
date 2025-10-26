@@ -40,4 +40,5 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout.index');
 

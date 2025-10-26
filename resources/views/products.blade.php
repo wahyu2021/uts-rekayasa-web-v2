@@ -134,10 +134,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const productDetailModal = document.getElementById('productDetailModal');
-        const cartCountBadge = document.querySelector('.cart-count'); // Get the cart count badge
+        const cartCountBadge = document.querySelector('.cart-count');
 
         productDetailModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget; // Button that triggered the modal
+            const button = event.relatedTarget; 
 
             const id = button.dataset.id;
             const name = button.dataset.name;
@@ -145,9 +145,9 @@
             const price = button.dataset.price;
             const image = button.dataset.image;
             const stock = button.dataset.stock;
-            const category = button.dataset.category; // Assuming you have category slug on the card
+            const category = button.dataset.category;
 
-            // Update the modal's content.
+            
             const modalProductImage = productDetailModal.querySelector('#modalProductImage');
             const modalProductName = productDetailModal.querySelector('#modalProductName');
             const modalProductCategory = productDetailModal.querySelector('#modalProductCategory');
@@ -164,20 +164,21 @@
             modalProductPrice.textContent = `Rp ${price}`;
             modalProductDescription.textContent = description;
             modalProductStock.textContent = stock;
-            productQuantity.value = 1; // Reset quantity
-            productQuantity.max = stock; // Set max quantity to stock
+            productQuantity.value = 1; 
+            productQuantity.max = stock; 
 
-            // Store product ID for cart/buy actions
+            
             addToCartBtn.dataset.productId = id;
             buyNowBtn.dataset.productId = id;
         });
 
-        // Handle Add to Cart button click
+        
         document.getElementById('addToCartBtn').addEventListener('click', function() {
             const productId = this.dataset.productId;
             const quantity = document.getElementById('productQuantity').value;
+            const url = `/cart/add/${productId}`; // Perbaikan utama di sini
 
-            fetch(`{{ route('cart.add', ['product' => 'PRODUCT_ID_PLACEHOLDER']) }}`.replace('PRODUCT_ID_PLACEHOLDER', productId), {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -187,7 +188,7 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    // If response is not OK, try to read it as text to get more info
+                    
                     return response.text().then(text => { throw new Error(text) });
                 }
                 return response.json();
@@ -195,28 +196,29 @@
             .then(data => {
                 if (data.success) {
                     alert(data.message);
-                    // Update cart count in navbar
+                    
                     if (cartCountBadge && data.cart_count !== undefined) {
                         cartCountBadge.textContent = data.cart_count;
                     }
                     var modal = bootstrap.Modal.getInstance(productDetailModal);
                     modal.hide();
                 } else {
-                    alert('Failed to add product to cart: ' + (data.message || 'Unknown error'));
+                    alert('Gagal menambahkan produk ke keranjang: ' + (data.message || 'Error tidak diketahui'));
                 }
             })
             .catch(error => {
-                console.error('Error adding to cart:', error);
-                alert('An error occurred while adding to cart. Check console for details.');
+                console.error('Error saat menambahkan ke keranjang:', error);
+                alert('Terjadi kesalahan saat menambahkan ke keranjang. Periksa konsol untuk detail.');
             });
         });
 
-        // Handle Buy Now button click
+        
         document.getElementById('buyNowBtn').addEventListener('click', function() {
             const productId = this.dataset.productId;
             const quantity = document.getElementById('productQuantity').value;
+            const url = `/cart/add/${productId}`; // Perbaikan utama di sini
 
-            fetch(`{{ route('cart.add', ['product' => 'PRODUCT_ID_PLACEHOLDER']) }}`.replace('PRODUCT_ID_PLACEHOLDER', productId), {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -232,19 +234,18 @@
             })
             .then(data => {
                 if (data.success) {
-                    alert(data.message + ' Redirecting to cart...');
-                    // Update cart count in navbar
+                    
                     if (cartCountBadge && data.cart_count !== undefined) {
                         cartCountBadge.textContent = data.cart_count;
                     }
-                    window.location.href = '{{ route('cart.index') }}'; // Redirect to cart page
+                    window.location.href = '{{ route('cart.index') }}'; 
                 } else {
-                    alert('Failed to process "Buy Now": ' + (data.message || 'Unknown error'));
+                    alert('Gagal memproses "Beli Sekarang": ' + (data.message || 'Error tidak diketahui'));
                 }
             })
             .catch(error => {
-                console.error('Error during "Buy Now":', error);
-                alert('An error occurred during "Buy Now". Check console for details.');
+                console.error('Error saat "Beli Sekarang":', error);
+                alert('Terjadi kesalahan saat "Beli Sekarang". Periksa konsol untuk detail.');
             });
         });
     });
