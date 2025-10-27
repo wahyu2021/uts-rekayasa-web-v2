@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -48,6 +49,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
     Route::patch('products/{product}/toggle-feature', [AdminProductController::class, 'toggleFeature'])->name('products.toggleFeature');
+
+    Route::resource('orders', AdminOrderController::class)->except(['create', 'store', 'destroy']);
 });
 
 // Cart Routes
@@ -64,4 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::post('/checkout/buy-now', [CheckoutController::class, 'buyNow'])->name('checkout.buy-now');
     Route::post('/checkout/selected', [CheckoutController::class, 'checkoutSelected'])->name('checkout.selected');
+
+    // User Order Routes
+    Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
 });

@@ -29,6 +29,8 @@
                             <i class="fas fa-chevron-down fa-xs ms-2"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ route('orders.index') }}">My Orders</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf

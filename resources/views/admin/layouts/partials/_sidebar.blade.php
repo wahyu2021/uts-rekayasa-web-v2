@@ -25,6 +25,12 @@
                     <i class="fas fa-box"></i> <span>Products</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"
+                    href="{{ route('admin.orders.index') }}">
+                    <i class="fas fa-shopping-cart"></i> <span>Orders</span>
+                </a>
+            </li>
         </ul>
 
         <hr class="text-secondary">

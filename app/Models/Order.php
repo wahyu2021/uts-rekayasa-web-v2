@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -14,6 +15,13 @@ class Order extends Model
         'total_price',
         'status',
         'shipping_address',
+        'tracking_number',
+        'shipping_status',
+        'tracking_history',
+    ];
+
+    protected $casts = [
+        'tracking_history' => 'array',
     ];
 
     public function user(): BelongsTo
@@ -25,4 +33,8 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class);
     }
-}
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }}
