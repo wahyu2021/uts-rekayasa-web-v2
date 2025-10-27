@@ -77,6 +77,23 @@
         </div>
     </section>
 
+    <section class="section">
+        <div class="container">
+            <div class="section-header text-center" data-aos="fade-up">
+                <span class="section-tag">Lokasi Kami</span>
+                <h2>Kunjungi Workshop Kami</h2>
+                <p class="lead">Kami akan sangat senang menyambut Anda di workshop kami. Silakan kunjungi kami untuk konsultasi langsung atau melihat sampel produk.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10" data-aos="fade-up">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d915.9702694660422!2d104.64323042109775!3d-2.9142618186891265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sid!4v1761543922178!5m2!1sen!2sid" width="100%" height="450" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     @include('components.cta-section', [
     'title' => 'Siap Memulai Proyek Pakaian Kustom Anda?',
     'subtitle' => 'Hubungi kami sekarang untuk konsultasi gratis dan wujudkan desain impian Anda dengan kualitas terbaik.'
