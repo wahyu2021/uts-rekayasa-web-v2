@@ -16,7 +16,7 @@
                     </h1>
                     <p class="hero-subtitle mb-4">Spesialisasi kami dalam jersey basket, PDL/PDH, jersey futsal & esport, hoodie, serta jaket. Dapatkan kualitas premium dengan desain sesuai keinginan Anda.</p>
                     <div class="d-flex gap-3">
-                        <a href="https://wa.me/62812345678" class="btn btn-primary btn-lg">
+                        <a href="https://wa.me/6282281954629" class="btn btn-primary btn-lg">
                             <i class="fab fa-whatsapp me-2"></i> Konsultasi Gratis
                         </a>
                         <a href="#portofolio" class="btn btn-secondary btn-lg">Lihat Portofolio</a>

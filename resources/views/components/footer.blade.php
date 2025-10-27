@@ -30,7 +30,7 @@
                 <h5>Hubungi Kami</h5>
                 <ul class="list-unstyled">
                     <li><a href="mailto:info@taashop.com">taashop@gmail.com</a></li>
-                    <li><a href="https://wa.me/62812345678">+62 812 345 678</a></li>
+                    <li><a href="https://wa.me/6282281954629">+62 822-8195-4629</a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
