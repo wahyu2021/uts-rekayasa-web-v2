@@ -350,10 +350,17 @@
     flex-direction: column;
     height: 100%;
     position: relative;
+    text-decoration: none;
+    color: inherit;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                 box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                 border-color 0.4s ease;
     will-change: transform, box-shadow; // Hint untuk browser agar animasi lebih smooth
+
+    &:hover {
+        text-decoration: none;
+        color: inherit;
+    }
 
     .product-image {
         position: relative;
