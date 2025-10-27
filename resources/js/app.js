@@ -5,6 +5,9 @@ import './typingEffect';
 import './stepRulerHover';
 import './scrollToTop';
 
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+window.Swal = Swal;
 
 import AOS from 'aos';
 AOS.init({

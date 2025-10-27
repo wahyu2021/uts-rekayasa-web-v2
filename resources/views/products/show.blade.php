@@ -72,7 +72,24 @@
                     if (cartCountBadge && data.cart_count !== undefined) {
                         cartCountBadge.textContent = data.cart_count;
                     }
-                    window.location.href = "{{ route('products.index') }}";
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Produk telah ditambahkan ke keranjang.'
+                    }).then(() => {
+                        window.location.href = "{{ route('products.index') }}";
+                    });
                 } else {
                     this.disabled = false;
                     this.innerHTML = 'Tambahkan Ke Keranjang';
