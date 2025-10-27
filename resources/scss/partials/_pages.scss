@@ -530,38 +530,63 @@
 // ============================================
 // AUTH PAGES STYLES
 // ============================================
-.auth-section {
-    padding: 100px 0;
-    background-color: #f8f9fa;
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--color-bg-light);
+    padding: 2rem 0;
 }
 
 .auth-card {
     background-color: #fff;
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid var(--color-border);
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-logo {
+    max-height: 40px;
+    margin-bottom: 1.5rem;
 }
 
 .auth-title {
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-secondary);
 }
 
-.auth-subtitle {
-    color: #666;
-    margin-bottom: 30px;
+.auth-body .form-label {
+    font-weight: 600;
+    color: var(--color-text-light);
 }
 
-.auth-link {
-    color: #F97316;
+.auth-body .form-control {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+}
+
+.auth-body .form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--color-primary-rgb), 0.25);
+}
+
+.auth-footer a {
+    color: var(--color-primary);
+    font-weight: 600;
     text-decoration: none;
 }
 
-.auth-link:hover {
+.auth-footer a:hover {
     text-decoration: underline;
-}
-
-.auth-bottom-text {
-    color: #666;
 }
